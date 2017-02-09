@@ -6,7 +6,7 @@ define(function(require) {
 	
 	invincible = new song("music/DEAF KEV - Invincible.mp3")
 
-	gridSize = 25
+	gridSize = 35
 	gridAudioWidth = Math.floor(audioContext.bufferSize/gridSize)
 
 	mesh = meshCreator.createMesh(vec(150,150), vec(gridSize,gridSize));

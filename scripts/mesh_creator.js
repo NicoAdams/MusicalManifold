@@ -1,26 +1,44 @@
 define(function(require) {	
-	vec = require('./vec')
+	vec = require('./vec');
+	viewport = require('./viewport');
 	
-	meshCreator = {};
-	meshCreator.createMesh = function(xCount, yCount) {
-		mesh = {}
+	var meshCreator = {};
+	meshCreator.createMesh = function(sizeVec, countVec, color) {
+		var mesh = {};
 		
 		getBasePoint = function(x, y) {
-			return vec(x / (xCount - 1), y / (yCount - 1))
+			return vec(2*x/(countVec.x-1)-1, 2*y/(countVec.y-1)-1);
 		}
 		
-		mesh.getPoints = function(fDisplacePoint = function(v) {return vec(0,0)}) {
-			points = []
-			for(x = 0; x < xCount; x++) {
-				points[x] = []
-				for(y = 0; y < yCount; y++) {
-					basePoint = getBasePoint(x, y)
-					points[x][y] = basePoint.add(fDisplacePoint(basePoint))
+		mesh.getPoints = function(fMapPoint=function(v){return v}) {
+			var points = [];
+			for(var x = 0; x < countVec.x; x++) {
+				points[x] = [];
+				for(var y = 0; y < countVec.y; y++) {
+					points[x][y] = fMapPoint(getBasePoint(x, y)).elementMul(sizeVec);
 				}
 			}
 			return points;
 		}
-		return mesh
+		
+		mesh.draw = function(fDisplacePoint) {
+			points = mesh.getPoints(fDisplacePoint);
+			for(var x = 0; x < countVec.x; x++)
+			{
+				for(var y = 0; y < countVec.y; y++)
+				{
+					if(x > 0) {
+						viewport.drawLine(points[x-1][y], points[x][y]);
+					}
+					if(y > 0) {
+						viewport.drawLine(points[x][y-1], points[x][y]);
+					}
+				}
+			}
+		}
+		
+		return mesh;
 	}
-	return meshCreator
-})
+	return meshCreator;
+});
+

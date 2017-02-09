@@ -48,6 +48,9 @@ define(function() {
 			mul: function(n) {
 				return vec(v.x * n, v.y * n);
 			},
+			elementMul: function(v2) {
+				return vec(v.x * v2.x, v.y * v2.y);
+			},
 			add: function(v2) {
 				return vec(v.x + v2.x, v.y + v2.y)
 			},

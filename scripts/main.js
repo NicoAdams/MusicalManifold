@@ -26,27 +26,30 @@ define(function(require) {
 	function basicMusicDrawFunc(t){
 		return function(v){
 
-		// update the music data
-		audioContext.updateTimeData()
-		audioContext.updateFrequencyData()
+			// update the music data
+			audioContext.updateTimeData()
+			audioContext.updateFrequencyData()
 
-		// data = processAudioData(audioContext.timeData)
+			// data = processAudioData(audioContext.timeData)
 
 
-		timeDataSum = -3000/audioContext.frequencyData.reduce(function(a, b) {return a + b;})
+			timeDataSum = -3000/audioContext.frequencyData.reduce(function(a, b) {return a + b;})
 
-		// freqIdx = Math.floor((v.x+1)/2*audioContext.bufferSize)
-		// freqValue = audioContext.frequencyData[freqIdx]*-.01
+			// freqIdx = Math.floor((v.x+1)/2*audioContext.bufferSize)
+			// freqValue = audioContext.frequencyData[freqIdx]*-.01
 
-		// timeIdx = Math.floor((v.y+1)/2*audioContext.bufferSize)
-		// timeValue = audioContext.timeData[freqIdx]*.1
+			// timeIdx = Math.floor((v.y+1)/2*audioContext.bufferSize)
+			// timeValue = audioContext.timeData[freqIdx]*.1
 
-		dx = Math.sin(Math.cos(t/1000)*v.x*Math.PI*2+v.y*2+t*.0008*timeDataSum*.000000015)*timeDataSum
-		// dx = Math.sin(v.x*Math.PI*2*timeDataSum*3+v.y*2+t*.008)/10
-		dy = Math.cos(v.y*Math.PI*timeDataSum+v.x*5+t*.0008*timeDataSum*.00000003)*timeDataSum
+			dx = Math.sin(Math.cos(t/1000)*v.x*Math.PI*2+v.y*2+t*.0008*timeDataSum*.000000015)*timeDataSum
+			// dx = Math.sin(v.x*Math.PI*2*timeDataSum*3+v.y*2+t*.008)/10
+			dy = Math.cos(v.y*Math.PI*timeDataSum+v.x*5+t*.0008*timeDataSum*.00000003)*timeDataSum
 
-		return vec(v.x + dx/30, v.y + dy/30);
+			dr = (timeDataSum - .8) * 2/(10*(v.x**4 + v.y**4) + 1)
 
+			return vec(v.x + dx/30, v.y + dy/30).rotate(dr);
+			
+			
 		}
 	}
 	

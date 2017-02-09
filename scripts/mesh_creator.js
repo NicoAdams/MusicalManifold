@@ -15,7 +15,7 @@ define(function(require) {
 			for(var x = 0; x < countVec.x; x++) {
 				points[x] = [];
 				for(var y = 0; y < countVec.y; y++) {
-					points[x][y] = fMapPoint(getBasePoint(x, y)).elementMul(sizeVec);
+					points[x][y] = fMapPoint(getBasePoint(x, y)).multiply(sizeVec);
 				}
 			}
 			return points;

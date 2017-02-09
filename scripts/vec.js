@@ -3,8 +3,8 @@ define(function() {
 		var v = {
 			x: x,
 			y: y,
-			0: x,
-			1: y,
+			// 0: x,
+			// 1: y,
 			// equals: function(v2) {
 			// 	return v.x == v2.x && v.y == v2.y;
 			// },

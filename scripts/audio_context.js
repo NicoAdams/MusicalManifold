@@ -14,8 +14,11 @@ define(function(require) {
 
 
 	audioContext.bufferSize = Math.pow(2,6)
-	audioContext.smoothingTimeConstant = 10
+	// audioContext.bufferSize = 256
+	
 	audioContext.analyser = audioContext.createAnalyser();
+	audioContext.analyser.smoothingTimeConstant = .99;
+	audioContext.analyser.fftSize = audioContext.bufferSize
 	audioContext.frequencyData = new Float32Array(audioContext.bufferSize)
 	audioContext.timeData = new Float32Array(audioContext.bufferSize)
 

@@ -3,25 +3,15 @@ define(function(require) {
 	viewport     = require('./viewport');
 	audioContext = require('./audio_context');
 	song         = require('./song');
+	mic          = require('./mic');
 	
 	invincible = new song("music/DEAF KEV - Invincible.mp3")
+	// mic()
 
 	gridSize = 35
 	gridAudioWidth = Math.floor(audioContext.bufferSize/gridSize)
 
-	mesh = meshCreator.createMesh(vec(150,150), vec(gridSize,gridSize));
-
-	function processAudioData(data)
-	{
-		result = []
-
-		for (var i = 0; i < gridSize; i++) {
-			dataSlice = data.slice(i*gridAudioWidth, (i+1)*gridAudioWidth)
-			result.push(Math.mean(dataSlice))
-		}
-		
-		return(result)
-	}
+	mesh = meshCreator.createMesh(vec(300,300), vec(gridSize,gridSize));
 	
 	function drawFunc(t) {
 		return function(v) {
@@ -51,10 +41,11 @@ define(function(require) {
 		// timeIdx = Math.floor((v.y+1)/2*audioContext.bufferSize)
 		// timeValue = audioContext.timeData[freqIdx]*.1
 
-		dx = Math.sin(v.x*Math.PI*2+v.y*2+t*.0008*timeDataSum*.00000001)
-		dy = Math.cos(v.y*Math.PI+v.x*5+t*.0008)*timeDataSum*3
+		dx = Math.sin(Math.cos(t/1000)*v.x*Math.PI*2+v.y*2+t*.0008*timeDataSum*.000000015)*timeDataSum
+		// dx = Math.sin(v.x*Math.PI*2*timeDataSum*3+v.y*2+t*.008)/10
+		dy = Math.cos(v.y*Math.PI*timeDataSum+v.x*5+t*.0008*timeDataSum*.00000003)*timeDataSum
 
-		return vec(v.x + dx/5, v.y + dy/5);
+		return vec(v.x + dx/30, v.y + dy/30);
 
 		}
 	}

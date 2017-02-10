@@ -77,9 +77,12 @@ define(function(require) {
 	viewport.setZoom = function(zoom) {
 		viewport.zoom = zoom;
 	};
-	viewport.drawLine = function(p1App, p2App, color="white") {
+	viewport.drawLine = function(p1App, p2App, color="#EEE") {
 		p1 = viewport.toScreen(p1App);
 		p2 = viewport.toScreen(p2App);
+
+		// c.fillStyle = color;
+		// c.fillRect(p1.x,p1.y,1,1)
 		
 		c.beginPath();
 		c.strokeStyle = color;

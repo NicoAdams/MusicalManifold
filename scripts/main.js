@@ -4,63 +4,34 @@ define(function(require) {
 	audioContext = require('./audio_context');
 	song         = require('./song');
 	mic          = require('./mic');
+	maps         = require('./maps')
 	
-	invincible = new song("music/DEAF KEV - Invincible.mp3")
+	// either input a song or use the mic for input (connected determines weather the song is connected to the speakers)
+	invincible = new song("music/DEAF KEV - Invincible.mp3", connected = true, gainValue = .1)
 	// mic()
 
-	gridSize = 35
-	gridAudioWidth = Math.floor(audioContext.bufferSize/gridSize)
+	// parameters you might want to tune
+	audioContext.analyser.smoothingTimeConstant = .9; // the closer to 1 the smoother bet less precises the data will be
+	gridresolution = vec(20,20) // number of horizontal and vertical grid nodes
+	gridSize       = vec(200,200) //width and height of grid in pixels
 
-	mesh = meshCreator.createMesh(vec(300,300), vec(gridSize,gridSize));
+
+	mesh           = meshCreator.createMesh(gridSize,gridresolution);
 	
-	function drawFunc(t) {
-		return function(v) {
-			motion = 0.2 * 1/(10*v.x**2 + 1)
-			xd = Math.sin(5*v.x + v.y + t*0.01) * motion;
-			yd = Math.sin(5*v.x + v.y + t*0.01 + 1) * motion;
-			return vec(v.x + xd, v.y + yd);
-		}
-	}
+	function time() {return (new Date()).getTime() / 1000}
+	function draw()
+	{
+		t = time()
+		map = maps.basicMusicDrawFunc(t)
 
-
-	function basicMusicDrawFunc(t){
-		return function(v){
-
-			// update the music data
-			audioContext.updateTimeData()
-			audioContext.updateFrequencyData()
-
-			// data = processAudioData(audioContext.timeData)
-
-
-			timeDataSum = -3000/audioContext.frequencyData.reduce(function(a, b) {return a + b;})
-
-			// freqIdx = Math.floor((v.x+1)/2*audioContext.bufferSize)
-			// freqValue = audioContext.frequencyData[freqIdx]*-.01
-
-			// timeIdx = Math.floor((v.y+1)/2*audioContext.bufferSize)
-			// timeValue = audioContext.timeData[freqIdx]*.1
-
-			dx = Math.sin(Math.cos(t/1000)*v.x*Math.PI*2+v.y*2+t*.0008*timeDataSum*.000000015)*timeDataSum
-			// dx = Math.sin(v.x*Math.PI*2*timeDataSum*3+v.y*2+t*.008)/10
-			dy = Math.cos(v.y*Math.PI*timeDataSum+v.x*5+t*.0008*timeDataSum*.00000003)*timeDataSum
-
-			dr = (timeDataSum - .8) * 2/(10*(v.x**4 + v.y**4) + 1)
-
-			return vec(v.x + dx/30, v.y + dy/30).rotate(dr);
-			
-			
-		}
-	}
-	
-	function getTime() {
-		return (new Date).getTime();	
-	}
-	
-	function draw(){
+		// clear and render the new grid
 		viewport.clear();
-		mesh.draw(basicMusicDrawFunc(getTime()));
+		mesh.draw(map);
+
+		// cordially ask the browser to insert draw in to the render cycle when it is convenient
 		requestAnimationFrame(draw)
 	}
+
+	// start the draw loop
 	draw()
 });

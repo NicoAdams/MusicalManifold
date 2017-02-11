@@ -1,6 +1,7 @@
 define(function(require) {
 
 	audioContext = require('./audio_context');
+	util = require('./util');
 
 	maps = {}
 
@@ -68,8 +69,9 @@ define(function(require) {
 
 			// dividing by the buffer size produces a normalized value
 			r = Math.sqrt(Math.pow(v.x,2)+Math.pow(v.y,2))
-			idx = Math.max(0,Math.floor(r/Math.sqrt(2)*audioContext.bufferSize)-1)
-			fMag = fData[idx]+fData[(idx+1)]+fData[(idx-1)]
+			fIndex = Math.max(0,Math.floor(r/Math.sqrt(2)*audioContext.bufferSize)-1)
+			console.log(fData.slice(fIndex-1, fIndex+2))
+			fMag = util.sum(fData.slice(fIndex-1, fIndex+2).map(function(e) {e < 0}))
 
 			dx =  fMag
 			dy = fMag

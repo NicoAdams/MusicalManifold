@@ -57,21 +57,22 @@ define(function(require) {
 	}
 
 	maps.freqDependant = function(t){
-		return function(v){
-
-			// update the music data
+		// update the music data
 			audioContext.updateFrequencyData()
 			
 			// normed frequency data yields a float32 array of values between 0 and 1 inclusive
 			fData = audioContext.normedFrequencyData
+		return function(v){
+
+			
 
 			// dividing by the buffer size produces a normalized value
 			r = Math.sqrt(Math.pow(v.x,2)+Math.pow(v.y,2))
+			idx = Math.max(0,Math.floor(r/Math.sqrt(2)*audioContext.bufferSize)-1)
+			fMag = fData[idx]+fData[(idx+1)]+fData[(idx-1)]
 
-			fMag = fData[Math.max(0,Math.floor(r/Math.sqrt(2)*audioContext.bufferSize)-1)]
-
-			dx =  Math.pow(10,-r)/3*fMag*2
-			dy = Math.pow(10,-r)/3*fMag*2
+			dx =  fMag
+			dy = fMag
 
 			return vec(v.x + dx, v.y + dy);
 			

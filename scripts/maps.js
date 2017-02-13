@@ -16,6 +16,7 @@ define(function(require) {
 		}
 	}
 
+// <<<<<<< HEAD
 	maps.crazyHackedVolumeManifold = function(t) {
 		audioContext.updateFrequencyData()
 		timeDataSum = -3000/audioContext.frequencyData.reduce(function(a, b) {return a + b;})
@@ -28,58 +29,58 @@ define(function(require) {
 	}
 
 	maps.basicMusicDrawFunc = function(t)		{
-		// update the music data
+		audioContext.updateFrequencyData()
+		fData = audioContext.normedFrequencyData
+		freqDataSum = fData.reduce(function(a, b) {return a + b;})/audioContext.bufferSize	
+		return function(v){
+
+			// update the music data
+
 			// audioContext.updateTimeData()
-			audioContext.updateFrequencyData()
 			
 			// normed frequency data yields a float32 array of values between 0 and 1 inclusive
-			fData = audioContext.normedFrequencyData
 
 			// dividing by the buffer size produces a normalized value
 			freqDataSum = fData.reduce(function(a, b) {return a + b;})/audioContext.bufferSize
-		return function(v){
-
-			
-
-			
 			r = Math.sqrt(Math.pow(v.x,2)+Math.pow(v.y,2))
 
-			radialWave = Math.sin(t)*Math.cos(r*Math.PI*3)*Math.pow(10,-r)/3*freqDataSum
-			dx = Math.sin(2*t+7*v.y)/10*freqDataSum+radialWave
-			dy =  Math.cos(3*t+5*v.x)/8*freqDataSum+radialWave
+			radialWave = .2*Math.sin(2*10**-2*t)*Math.cos(r*Math.PI*3)*Math.pow(10,-r)/3*freqDataSum
+			dx = 2*Math.sin(10**-2*t+10*v.y)/10*freqDataSum+radialWave
+			dy = 2*Math.cos(10**-2*t+10*v.x)/8*freqDataSum+radialWave
 
 			return vec(v.x + dx, v.y + dy).rotate(10+freqDataSum*-r*2*Math.PI/3);
-			
-			
 		}
 	}
 
-	maps.freqDependant = function(t){
+	maps.freqDependent = function(t, averageOverIndices){
 		// update the music data
-			audioContext.updateFrequencyData()
-			
-			// normed frequency data yields a float32 array of values between 0 and 1 inclusive
-			fData = audioContext.normedFrequencyData
+		audioContext.updateFrequencyData()
+		
+		// normed frequency data yields a float32 array of values between 0 and 1 inclusive
+		fData = audioContext.normedFrequencyData
 		return function(v){
-
-			
 
 			// dividing by the buffer size produces a normalized value
 			r = Math.sqrt(Math.pow(v.x,2)+Math.pow(v.y,2))
+
 			fIndex = Math.max(0,Math.floor(r/Math.sqrt(2)*audioContext.bufferSize)-1)
 
 			averageRange = 4
 			fMag = util.sum(fData.slice(Math.max(0,fIndex-averageRange), Math.min(fIndex+averageRange+1,audioContext.bufferSize-1)))/(averageRange*2*4)
 			// fMag = fData.slice(fIndex)
+// =======
+			fLower = Math.max(0,Math.floor(r/Math.sqrt(2)*audioContext.bufferSize)-1);
+			fUpper = fLower + averageOverIndices;
+			fMag = util.sum(fData.slice(fLower, fUpper))/averageOverIndices;
+
 
 			dx =  fMag
 			dy = fMag
 
 			return vec(v.x + dx, v.y + dy);
-			
-			
 		}
 	}
+// <<<<<<< HEAD
 
 		maps.basicFFT = function(t){
 		// update the music data
@@ -152,7 +153,7 @@ define(function(require) {
 			{
 				count+=1
 				magnitude = audioContext.getFrequencyMagnitudeNormed(frequency)
-				dy     += Math.cos(v.x*Math.PI*frequency/200)*magnitude*Math.pow(10,-r/10)
+				dy     += Math.cos(r*Math.PI*frequency/200)*magnitude*Math.pow(10,-r/10)
 				frequency+=100
 
 			}
@@ -164,6 +165,9 @@ define(function(require) {
 		}
 	}
 
+// =======
+	
+// >>>>>>> origin/gh-pages
 	return(maps)
 
 });

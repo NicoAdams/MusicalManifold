@@ -4,26 +4,49 @@ define(function(require) {
 	audioContext = require('./audio_context');
 	song         = require('./song');
 	mic          = require('./mic');
-	maps         = require('./maps')
+	maps         = require('./maps');
+	timer		 = require('./timer');
 	
 	// either input a song or use the mic for input (connected determines weather the song is connected to the speakers)
+
 	// invincible = new song("music/C-major.mp3", connected = true, gainValue = .8)
 	invincible = new song("music/DEAF KEV - Invincible.mp3", connected = true, gainValue = .8)
 	// mic()
 
 	// parameters you might want to tune
 	audioContext.analyser.smoothingTimeConstant = .8	; // the closer to 1 the smoother bet less precises the data will be
-	gridresolution = vec(Math.pow(2,12),1) // number of horizontal and vertical grid nodes
-	gridSize       = vec(window.innerWidth,200) //width and height of grid in pixels
+	gridresolution = vec(40,40) // number of horizontal and vertical grid nodes
+	gridSize       = vec(200,200) //width and height of grid in pixels
+
+	var currSong;// = new song("music/DEAF KEV - Invincible.mp3", connected = true, gainValue = .1)
+	// mic();
+	
+	function startNewSong(path) {
+		currSong = new song(path);
+	}
+	
+	window.onOpenFile = function(event) {
+		var tmppath = URL.createObjectURL(event.target.files[0]);
+		currSong = new song(tmppath, connected = true, gainValue = .2)
+	}
+	
+	// parameters you might want to tune
+	audioContext.analyser.smoothingTimeConstant = .5; // the closer to 1 the smoother bet less precises the data will be
+	gridresolution = vec(50,50) // number of horizontal and vertical grid nodes
+	gridSize       = vec(200,200) //width and height of grid in pixels
+
 
 
 	mesh           = meshCreator.createMesh(gridSize,gridresolution);
 	
-	function time() {return (new Date()).getTime() / 1000}
+	smoothing = 16;
+
 	function draw()
 	{
-		t = time()
-		map = maps.timeToSpace(t)
+
+		// t = time()
+		t = timer.ms();
+		map = maps.timeToSpace(t);
 
 		// clear and render the new grid
 		viewport.clear();

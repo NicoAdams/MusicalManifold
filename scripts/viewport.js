@@ -27,27 +27,27 @@ define(function(require) {
 	};
 	viewport.screenWidth = function() {
 		// Returns the screen width
-		return window.innerWidth
+		return window.innerWidth;
 	};
 	viewport.screenHeight = function() {
 		// Returns the screen height
-		return window.innerHeight
+		return window.innerHeight;
 	};
 	viewport.left = function() {
 		// Returns the game coord of the left screen edge
-		return viewport.centerX - (viewport.screenWidth() / 2) / viewport.zoom
+		return viewport.centerX - (viewport.screenWidth() / 2) / viewport.zoom;
 	};
 	viewport.right = function() {
 		// Returns the game coord of the right screen edge
-		return viewport.centerX + (viewport.screenWidth() / 2) / viewport.zoom
+		return viewport.centerX + (viewport.screenWidth() / 2) / viewport.zoom;
 	};
 	viewport.bottom = function() {
 		// Returns the game coord of the bottom screen edge
-		return -viewport.centerY - (viewport.screenHeight() / 2) / viewport.zoom
+		return -viewport.centerY - (viewport.screenHeight() / 2) / viewport.zoom;
 	};
 	viewport.top = function() {
 		// Returns the game coord of the top screen edge
-		return -viewport.centerY + (viewport.screenHeight() / 2) / viewport.zoom
+		return -viewport.centerY + (viewport.screenHeight() / 2) / viewport.zoom;
 	};
 	viewport.toScreen = function(appCoord) { 
 		// Converts game coords to pixels

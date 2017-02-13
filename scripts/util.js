@@ -12,7 +12,11 @@ define(function() {
 	}
 	
 	util.sum = function(arr) {
-		return arr.reduce(function(a, b) {return a + b;})
+		return arr.reduce(function(a, b) {return a + b;}, 0)
+	}
+	
+	util.rgb = function(r,g,b) {
+		return "rgb("+Math.round(r)+","+Math.round(g)+","+Math.round(b)+")";
 	}
 	
 	return util;

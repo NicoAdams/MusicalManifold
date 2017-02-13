@@ -4,8 +4,11 @@ define(function() {
 	}
 	startTime = getAbsTime();
 	return {
-		getTime: function() {
+		ms: function() {
 			return getAbsTime() - startTime;
+		},
+		s: function() {
+			return getMS() / 1000;
 		}
 	}
 })

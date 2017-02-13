@@ -12,9 +12,16 @@
 		</style>
 	</head>
 	<body>
-		<canvas id="canvas">
 			HTML canvas doesn't work
 		</canvas>
 		<script data-main="scripts/main" src="scripts/require.js"></script>
+		<script type="text/javascript">
+			
+			OSCILATORFUNC = function(e)
+	{
+		// console.log(e)
+		audioContext.oscillator.frequency.value = e.clientX*10;
+	}
+		</script>
 	</body>
 </html>

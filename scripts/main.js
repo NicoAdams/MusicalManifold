@@ -7,13 +7,14 @@ define(function(require) {
 	maps         = require('./maps')
 	
 	// either input a song or use the mic for input (connected determines weather the song is connected to the speakers)
-	// invincible = new song("music/DEAF KEV - Invincible.mp3", connected = true, gainValue = .1)
-	mic()
+	// invincible = new song("music/C-major.mp3", connected = true, gainValue = .8)
+	invincible = new song("music/DEAF KEV - Invincible.mp3", connected = true, gainValue = .8)
+	// mic()
 
 	// parameters you might want to tune
-	audioContext.analyser.smoothingTimeConstant = .75	; // the closer to 1 the smoother bet less precises the data will be
-	gridresolution = vec(50,50) // number of horizontal and vertical grid nodes
-	gridSize       = vec(200,200) //width and height of grid in pixels
+	audioContext.analyser.smoothingTimeConstant = .8	; // the closer to 1 the smoother bet less precises the data will be
+	gridresolution = vec(Math.pow(2,12),1) // number of horizontal and vertical grid nodes
+	gridSize       = vec(window.innerWidth,200) //width and height of grid in pixels
 
 
 	mesh           = meshCreator.createMesh(gridSize,gridresolution);
@@ -22,7 +23,7 @@ define(function(require) {
 	function draw()
 	{
 		t = time()
-		map = maps.freqDependant(t)
+		map = maps.timeToSpace(t)
 
 		// clear and render the new grid
 		viewport.clear();
@@ -34,4 +35,6 @@ define(function(require) {
 
 	// start the draw loop
 	draw()
+
+	
 });

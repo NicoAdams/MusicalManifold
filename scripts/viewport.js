@@ -77,12 +77,19 @@ define(function(require) {
 	viewport.setZoom = function(zoom) {
 		viewport.zoom = zoom;
 	};
-	viewport.drawLine = function(p1App, p2App, color="#EEE") {
+	viewport.drawLine = function(p1App, p2App, color="#CCC") {
 		p1 = viewport.toScreen(p1App);
 		p2 = viewport.toScreen(p2App);
 
 		// c.fillStyle = color;
-		// c.fillRect(p1.x,p1.y,1,1)
+		// radius = 5
+		// c.fillRect(p1.x-radius/2,p1.y-radius/2,radius,radius)
+
+		// radius = 5
+		// c.beginPath();
+		// c.arc(p1.x-radius/2, p1.y-radius/2, radius, 0, 2 * Math.PI, false);
+		// c.fillStyle = color;
+		// c.fill();
 		
 		c.beginPath();
 		c.strokeStyle = color;

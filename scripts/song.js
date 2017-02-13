@@ -16,7 +16,6 @@ define(function(require) {
 		songMediaSource = audioContext.createMediaElementSource(audioEllement)
 		songMediaSource.connect(gain)
 		songMediaSource.connect(audioContext.analyser)
-		console.log(connected)
 		if (connected) {gain.connect(audioContext.destination)}
 
 	}

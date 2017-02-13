@@ -16,7 +16,21 @@ define(function(require) {
 		function connectStream(stream)
 		{
 			source = audioContext.createMediaStreamSource(stream);
-			console.log(audioContext.analyser)
+			
+			// audioContext.oscillator = audioContext.createOscillator();
+
+			// // audioContext.oscillator.type = 'square';
+			// audioContext.oscillator.frequency.value = 440; // value in hertz
+
+			// var gain = audioContext.createGain()
+			// gain.gain.value = .1
+
+
+
+			// audioContext.oscillator.connect(gain);
+			// gain.connect(audioContext.destination)
+			// audioContext.oscillator.start();
+			// source = audioContext.oscillator
 			source.connect(audioContext.analyser)
 		}
 

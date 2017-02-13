@@ -13,7 +13,7 @@ define(function(require) {
 
 
 
-	audioContext.bufferSize = Math.pow(2,8)
+	audioContext.bufferSize = Math.pow(2,12)
 	// audioContext.bufferSize = 256
 	
 	audioContext.analyser = audioContext.createAnalyser();
@@ -25,6 +25,16 @@ define(function(require) {
 
 	audioContext.min = audioContext.analyser.minDecibels-15
 	audioContext.max = audioContext.analyser.maxDecibels+15
+
+	sample_rate = audioContext.sampleRate
+	audioContext.freq_bin_width = sample_rate/(audioContext.bufferSize)
+	
+
+	audioContext.getFrequencyMagnitudeNormed = function(freq)
+	{
+		binNum = Math.ceil(freq/audioContext.freq_bin_width)
+		return(audioContext.normedFrequencyData[binNum])
+	}
 	
 	audioContext.normalizeFreqData = function(element)
 		{
